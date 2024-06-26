@@ -12,6 +12,9 @@ RUN mvn dependency:go-offline
 COPY src /app/src
 RUN mvn package -DskipTests
 
+# Second stage: Use an official OpenJDK runtime image
+FROM openjdk:22-jdk
+
 # Set the working directory
 WORKDIR /app
 
@@ -24,4 +27,5 @@ EXPOSE 8080
 # Define the command to run the application
 CMD ["java", "-jar", "/app/PREVENTIVO-BE.jar"]
 
+# Use a non-root user
 USER 10001
