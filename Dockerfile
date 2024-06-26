@@ -12,9 +12,6 @@ RUN mvn dependency:go-offline
 COPY src /app/src
 RUN mvn package -DskipTests
 
-# Seconda fase: crea una immagine più leggera con solo JRE
-FROM openjdk:22-jre
-
 # Setta la directory di lavoro
 WORKDIR /app
 
