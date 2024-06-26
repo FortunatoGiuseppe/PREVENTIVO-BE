@@ -1,5 +1,5 @@
 # Use the official Maven image as a parent image
-FROM maven:3.8.4-openjdk-22 AS build
+FROM maven:3.8.4-openjdk-17 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,7 +14,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Use a smaller base image for the runtime environment
-FROM adoptopenjdk/openjdk22:alpine-jre
+FROM openjdk:17-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
