@@ -27,4 +27,4 @@ EXPOSE 8080
 # Definisce il comando per eseguire l'applicazione
 CMD ["java", "-jar", "/app/CREA-PREVENTIVO-BE.jar"]
 
-USER 10001
+USER 10002
