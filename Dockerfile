@@ -1,16 +1,31 @@
-FROM maven:3.8.4-openjdk-21 AS build
+# Use the official Maven image as a parent image
+FROM maven:3.8.4-openjdk-22 AS build
+
+# Set the working directory inside the container
 WORKDIR /app
 
-COPY pom.xml /app/
-RUN mvn dependency:go-offline
+# Copy the POM file to download dependencies
+COPY pom.xml .
 
-COPY src /app/src
-RUN mvn package -DskipTests
+# Copy the rest of the project
+COPY src ./src
 
-COPY --from=build /app/target/PREVENTIVO-BE-0.0.1-SNAPSHOT.jar /app/PREVENTIVO-BE.jar
+# Build the project using Maven
+RUN mvn clean package -DskipTests
 
+# Stage 2: Use a smaller base image for the runtime environment
+FROM adoptopenjdk/openjdk22:alpine-jre
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the packaged JAR file from the build stage to the runtime environment
+COPY --from=build /app/target/PREVENTIVO-BE-0.0.1-SNAPSHOT.jar ./app.jar
+
+# Expose the port that the application listens to
 EXPOSE 8080
 
-CMD ["java", "-jar", "/app/PREVENTIVO-BE.jar"]
+# Command to run the application
+CMD ["java", "-jar", "app.jar"]
 
 USER 10001
