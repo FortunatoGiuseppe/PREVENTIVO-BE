@@ -1,5 +1,5 @@
 # First stage: Use an official Maven image with OpenJDK 17 for building the application
-FROM maven:3.8.4-openjdk-22 AS build
+FROM maven:3.8.4-openjdk-21 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -11,9 +11,6 @@ RUN mvn dependency:go-offline
 # Copy the rest of the project and compile the package
 COPY src /app/src
 RUN mvn package -DskipTests
-
-# Second stage: Use an official OpenJDK runtime image
-FROM openjdk:22-jdk
 
 # Set the working directory
 WORKDIR /app
